@@ -3,6 +3,9 @@
 	displayAddress:	.word	0x10008000
 .text
 init:
+	# Free registers (Need double check):
+	# v1, a1, a2, a3,s7
+	# Other resigters not in below is free to use, but need to be careful to not conflict with mine
 	lw $t0, displayAddress	# $t0 stores the base address for display
 	li $t1, 16 		# x index for doodle
 	li $t2, 32 		# y index for doodle
@@ -16,6 +19,7 @@ init:
 	li $s1, 0x0c4383	# background color
 	li $s2, 0x00ff9f	# platform color
 	li $s3, -1		#curr rising/falling
+	li $s4, 0        	# jumping height   
 	li $s5, -10		# position of next platform
 	
 	
@@ -34,21 +38,25 @@ conitnue:
 action:
 	lw $s6, 0xffff0000
 	beq $s6, 0, conitnue
-	move $s7, $ra
+	add $sp, $sp, -4
+	sw $ra, 0($sp)
 	lw $s6, 0xffff0004
 	beq $s6, 0x6A, goLeft
 	beq $s6, 0x6B, goRight
-	move $ra, $s7
+	lw $ra, 0($sp)
+	addi $sp,$sp,4
 	jr $ra
 	
 goLeft:
 	addi $t1, $t1, -1
-	move $ra, $s7
+	lw $ra, 0($sp)
+	addi $sp,$sp,4
 	jr $ra
 	
 goRight:
 	addi $t1, $t1, 1
-	move $ra, $s7
+	lw $ra, 0($sp)
+	addi $sp,$sp,4
 	jr $ra
 
 resetDA:
@@ -67,45 +75,45 @@ resetPos:
 addOnePlatform:
 	move $t9, $k1
 	lw $t0, displayAddress
-	sll $k0, $a2, 2		
+	sll $k0, $a0, 2		
 	sll $k1, $k1, 7
 	add $t0, $t0, $k0
 	add $t0, $t0, $k1
 	addi $t0, $t0, -4
 	sw $s2, 0($t0)
-	addi $s6, $s6, 1	
-	addi $a2, $a2, 1	
+	addi $s6, $s6, -1	
+	addi $a0, $a0, 1	
 	move $k1, $t9
-	bne $s6, $s7, addOnePlatform	
+	bnez $s6, addOnePlatform	
 	jr $ra
 		
 addElements:
 	blt $t2, $zero, resetPos
-	move $v1, $ra
-	move $a2, $t3	
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+	move $a0, $t3	
 	jal addBackground	
-	li $s6, 0
-	li $s7, 5 # the length of the platform
-	li $a3, 4
+	li $s6, 5 # the length of the platform
+	li $a0, 4
 	lw $t0, displayAddress
 	addi $k1, $t4, -1
 	jal addOnePlatform		
-	move $a2, $t5		
+	move $a0, $t5		
 	li $s6, 0
-	li $s7, 5 # the length of the platform
-	li $a3, 4
+	li $s6, 5 # the length of the platform
+	li $a0, 4
 	addi $k1, $t6, -1
 	lw $t0, displayAddress
 	jal addOnePlatform
-	move $a2, $t7		
-	li $s6, 0
-	li $s7, 5 # the length of the platform
-	li $a3, 4
+	move $a0, $t7		
+	li $s6, 5 # the length of the platform
+	li $a0, 4
 	lw $t0, displayAddress
 	addi $k1, $t8, -1
 	jal addOnePlatform	
 	lw $t0, displayAddress
-	move $ra, $v1
+	lw $ra, 0($sp)
+	addi $sp, $sp, 4
 	jr $ra
 	
 
@@ -134,8 +142,9 @@ addDoodle:
 	
 
 onPlatform:
-	move $v0, $t3
-	move $v1, $ra
+	addi $sp, $sp, -8
+	sw $ra, 0($sp)
+	sw $t3, 4($sp)
 	lw $t0, displayAddress
 	sll $k0, $t1, 2		
 	addi $k1, $t2, -1
@@ -146,8 +155,9 @@ onPlatform:
 	lw $t3, 0($t0)
 	lw $t0, displayAddress
 	beq $t3, $s2, on
-	move $t3,$v0
-	move $ra, $v1
+	lw $ra, 0($sp)
+	lw $t3,4($sp)
+	addi $sp,$sp,8
 	lw $t0, displayAddress
 	jr $ra
 	
@@ -156,8 +166,9 @@ on:
 	jal addDoodle
 	li $s3, -1
 	li $s4, 0	
-	move $t3,$v0
-	move $ra, $v1
+	lw $ra, 0($sp)
+	lw $t3,4($sp)
+	addi $sp,$sp,8
 	lw $t0, displayAddress
 	##########################################animation start here #####################################
 	bgt $t6,$t2, movement
