@@ -19,15 +19,13 @@ init:
 	li $s1, 0x0c4383	# background color
 	li $s2, 0x00ff9f	# platform color
 	li $s3, -1		#curr rising/falling
-	li $s4, 0        	# jumping height   
+	li $s4, 0        	# init height   
 	li $s5, -10		# position of next platform
 	
 	
 main:
 	jal action
 	jal addElements
-	jal addDoodle
-	jal currHeight
 	jal onPlatform
 	jal sleep
 	j main
@@ -93,27 +91,25 @@ addElements:
 	sw $ra, 0($sp)
 	move $a0, $t3	
 	jal addBackground	
-	li $s6, 5 # the length of the platform
-	li $a0, 4
+	li $s6, 10 # the length of the platform
 	lw $t0, displayAddress
 	addi $k1, $t4, -1
 	jal addOnePlatform		
 	move $a0, $t5		
 	li $s6, 0
-	li $s6, 5 # the length of the platform
-	li $a0, 4
+	li $s6, 10 # the length of the platform
 	addi $k1, $t6, -1
 	lw $t0, displayAddress
 	jal addOnePlatform
 	move $a0, $t7		
-	li $s6, 5 # the length of the platform
-	li $a0, 4
+	li $s6, 10 # the length of the platform
 	lw $t0, displayAddress
 	addi $k1, $t8, -1
 	jal addOnePlatform	
 	lw $t0, displayAddress
 	lw $ra, 0($sp)
 	addi $sp, $sp, 4
+	j addDoodle
 	jr $ra
 	
 
@@ -145,6 +141,7 @@ onPlatform:
 	addi $sp, $sp, -8
 	sw $ra, 0($sp)
 	sw $t3, 4($sp)
+	jal currHeight
 	lw $t0, displayAddress
 	sll $k0, $t1, 2		
 	addi $k1, $t2, -1
@@ -189,12 +186,13 @@ movement:
 
 movePlat:
 
-	li $t2, 32
+	li $v0, 32
 	addi $t4,$t4,1	
 	addi $t6,$t6,1
+	move $t2, $t4
 	jal addElements
 	jal sleep
-	bne $t4, $t2, movePlat
+	bne $t4, $v0, movePlat
 	j main
 					
 																
