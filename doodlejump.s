@@ -67,6 +67,161 @@ addBackground:
 	bgt $t0, 0x10008ffc, resetDA	# = 4092
 	j addBackground
 
+
+addDumbCloud:
+	li $t9,0xfcb708
+	li $v0, 41       
+	li $a0, 0          
+	syscall 
+	bgez $a0, cloudMove
+	lw $t0, displayAddress
+	addi $t0,$t0,116
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	addi $t0,$t0,128
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	addi $t0,$t0,128
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	lw $t0, displayAddress
+	li $t9,0xffffff
+	addi $t0,$t0,1052
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	addi $t0, $t0, 124
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	sw $t9, 16($t0)
+	sw $t9, 20($t0)
+	addi $t0, $t0, 132
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	lw $t0, displayAddress  
+	addi $t0,$t0,1104
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	addi $t0, $t0, 124
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	sw $t9, 16($t0)
+	sw $t9, 20($t0)
+	addi $t0, $t0, 132
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	lw $t0, displayAddress
+	addi $t0,$t0,2840
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	addi $t0, $t0, 124
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	sw $t9, 16($t0)
+	sw $t9, 20($t0)
+	addi $t0, $t0, 132
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	lw $t0, displayAddress
+	jr $ra
+
+cloudMove:
+	lw $t0, displayAddress
+	addi $t0,$t0,112
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	addi $t0,$t0,132
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	addi $t0,$t0,124
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	addi $t0,$t0,132	
+	sw $t9, 0($t0)
+	sw $t9, 8($t0)
+	lw $t0, displayAddress
+	li $t9,0xffffff
+	addi $t0,$t0,1044
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	addi $t0, $t0, 124
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	sw $t9, 16($t0)
+	sw $t9, 20($t0)
+	addi $t0, $t0, 132
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	lw $t0, displayAddress
+	addi $t0,$t0,1112
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	addi $t0, $t0, 124
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	sw $t9, 16($t0)
+	sw $t9, 20($t0)
+	addi $t0, $t0, 132
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	lw $t0, displayAddress
+	addi $t0,$t0,2832
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	addi $t0, $t0, 124
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	sw $t9, 16($t0)
+	sw $t9, 20($t0)
+	addi $t0, $t0, 132
+	sw $t9, 0($t0)		
+	sw $t9, 4($t0)
+	sw $t9, 8($t0)
+	sw $t9, 12($t0)
+	lw $t0, displayAddress
+	jr $ra
+	
 resetPos:
 	li $t2, 32
 	
@@ -88,9 +243,10 @@ addOnePlatform:
 addElements:
 	blt $t2, $zero, resetPos
 	addi $sp, $sp, -4
-	sw $ra, 0($sp)
-	move $a0, $t3	
+	sw $ra, 0($sp)	
 	jal addBackground	
+	jal addDumbCloud
+	move $a0, $t3	
 	li $s6, 10 # the length of the platform
 	lw $t0, displayAddress
 	addi $k1, $t4, -1
