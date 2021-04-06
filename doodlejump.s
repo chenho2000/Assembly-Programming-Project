@@ -336,6 +336,7 @@ movement:
 	move $t4, $t6
 	move $t5, $t7
 	move $t6, $t8
+	li $t8, -13
 	add $t7,$t7, $s5
 	sub $s5, $zero, $s5
 	j movePlat
@@ -345,6 +346,7 @@ movePlat:
 	li $v0, 32
 	addi $t4,$t4,1	
 	addi $t6,$t6,1
+	addi $t8,$t8,1
 	move $t2, $t4
 	jal addElements
 	jal sleep
