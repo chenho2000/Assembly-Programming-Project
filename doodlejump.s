@@ -1,6 +1,7 @@
 
 .data
 	displayAddress:	.word	0x10008000
+	music: .byte 60,60,67,67,69,69,67,65,65,64,64,62,62,60,0
 .text
 init:
 	# Free registers (Need double check):
@@ -21,13 +22,33 @@ init:
 	li $s3, -1		#curr rising/falling
 	li $s4, 0        	# init height   
 	li $s5, -10		# position of next platform
+	la $v1, music
+	li $s7 ,-10
 	
 	
-main:
+main:	
+	
+	beq $s7, 0, play
+	addi $s7,$s7,1
 	jal action
 	jal addElements
 	jal onPlatform
 	jal sleep
+	j main
+
+	
+play:
+	li $s7,-10
+	li $v0,31
+	lb $a0,  0($v1)
+	beqz $a0,replay
+	li $a1, 10000
+	li $a3,100
+	addi $v1,$v1,1
+	syscall
+	j main	
+replay:
+	la $v1, music
 	j main
 
 conitnue:
@@ -314,7 +335,7 @@ onPlatform:
 	lw $t0, displayAddress
 	jr $ra
 	
-on:
+on:	
 	lw $t0, displayAddress
 	jal addDoodle
 	li $s3, -1
@@ -326,8 +347,7 @@ on:
 	##########################################animation start here #####################################
 	bgt $t6,$t2, movement
 	jr $ra
-
-
+	
 movement:
 	li $v0, 1
 	move $a0, $t6
