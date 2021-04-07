@@ -349,18 +349,24 @@ on:
 	jr $ra
 	
 movement:
-	li $v0, 1
-	move $a0, $t6
-	syscall
 	move $t3, $t5
 	move $t4, $t6
 	move $t5, $t7
 	move $t6, $t8
 	li $t8, -13
 	add $t7,$t7, $s5
+	bgez $s5, randomNext
 	sub $s5, $zero, $s5
 	j movePlat
 
+randomNext:
+	li $a1, 21
+	li $v0, 42   #random
+	syscall
+	add $a0, $a0, -20
+	move $s5,$a0
+	j movePlat
+	
 movePlat:
 
 	li $v0, 32
