@@ -346,7 +346,7 @@ on:
 	addi $sp,$sp,8
 	lw $t0, displayAddress
 	##########################################animation start here #####################################
-	bgt $t6,$t2, movement
+	bgt $t4,$t2, movement
 	jr $ra
 	
 noJ:
@@ -354,7 +354,6 @@ noJ:
 	lw $t3,4($sp)
 	addi $sp,$sp,8
 	lw $t0, displayAddress
-	bgt $t6,$t2, movement
 	jr $ra
 	
 movement:
