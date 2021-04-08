@@ -338,6 +338,7 @@ onPlatform:
 on:	
 	lw $t0, displayAddress
 	jal addDoodle
+	bltz $s3, noJ
 	li $s3, -1
 	li $s4, 0	
 	lw $ra, 0($sp)
@@ -345,6 +346,14 @@ on:
 	addi $sp,$sp,8
 	lw $t0, displayAddress
 	##########################################animation start here #####################################
+	bgt $t6,$t2, movement
+	jr $ra
+	
+noJ:
+	lw $ra, 0($sp)
+	lw $t3,4($sp)
+	addi $sp,$sp,8
+	lw $t0, displayAddress
 	bgt $t6,$t2, movement
 	jr $ra
 	
