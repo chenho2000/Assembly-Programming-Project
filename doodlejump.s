@@ -360,7 +360,7 @@ movement:
 	j movePlat
 
 randomNext:
-	li $a1, 21
+	li $a1, 17
 	li $v0, 42   #random
 	syscall
 	add $a0, $a0, -20
