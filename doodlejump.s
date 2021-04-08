@@ -363,7 +363,7 @@ randomNext:
 	li $a1, 17
 	li $v0, 42   #random
 	syscall
-	add $a0, $a0, -20
+	add $a0, $a0, -17
 	move $s5,$a0
 	j movePlat
 	
