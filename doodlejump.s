@@ -471,7 +471,7 @@ fall:
 
 sleep:
 	li $v0, 32
-	li $a0, 15		# sleep
+	li $a0, 60		# sleep
  	syscall
  	jr $ra
 
