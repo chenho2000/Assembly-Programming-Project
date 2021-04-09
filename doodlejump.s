@@ -2,6 +2,8 @@
 .data
 	displayAddress:	.word	0x10008000
 	music: .byte 60,60,67,67,69,69,67,65,65,64,64,62,62,60,0
+	doodleColor: .word 0xcb0c59
+	backgrounfColor: .word 0x0c4383
 .text
 init:
 	# Free registers (Need double check):
@@ -17,9 +19,9 @@ init:
 	li $t7, 20		# x index for platform 3
 	li $t8, 2		# y index for platform 3
 	li $s0, 0xcb0c59	# doodle color
-	li $s1, 0x0c4383	# background color
 	li $s2, 0x00ff9f	# platform color
-	li $s3, -1		#curr rising/falling
+	li $s1, 0 		# curr dumb word
+	li $s3, -1		# curr rising/falling
 	li $s4, 0        	# init height   
 	li $s5, -10		# position of next platform
 	la $v1, music
@@ -98,8 +100,10 @@ resetDA:
 	jr $ra
 	
 addBackground:
-	sw $s1, 0($t0)		
+	lw $s0, backgrounfColor
+	sw $s0, 0($t0)		
 	addi $t0, $t0, 4
+	lw $s0, doodleColor
 	bgt $t0, 0x10008ffc, resetDA	# = 4092
 	j addBackground
 
@@ -282,6 +286,7 @@ addElements:
 	sw $ra, 0($sp)	
 	jal addBackground	
 	jal addDumbCloud
+	jal addDumbWords
 	move $a0, $t3	
 	li $s6, 10 # the length of the platform
 	lw $t0, displayAddress
@@ -304,7 +309,17 @@ addElements:
 	j addDoodle
 	jr $ra
 	
-
+addDumbWords:
+	bltz $s5,conitnue
+	li $t9, 1
+	beq $s1,$t9,dumbCool
+	li $t9, 2
+	beq $s1,$t9,dumbWow
+	li $t9, 3
+	beq $s1,$t9, dumbNice
+	jr $ra
+	
+	
 addDoodle:
 	lw $t0, displayAddress
 	sll $k0, $t1, 2		
@@ -351,6 +366,10 @@ onPlatform:
 	jr $ra
 	
 on:	
+	li $a1,6
+	li $v0,42
+	syscall
+	move $s1,$a0
 	lw $t0, displayAddress
 	jal addDoodle
 	bltz $s3, noJ
@@ -421,10 +440,129 @@ fall:
 
 sleep:
 	li $v0, 32
-	li $a0, 60		# sleep
+	li $a0, 30		# sleep
  	syscall
  	jr $ra
+
+####################################words#############
+dumbWow:
+        li $a2,0xe7de0c
+	li $v0, 41       
+	li $a0, 0          
+	syscall 
 	
+	lw $t0, displayAddress
+	sw $a2, 648($t0)
+	sw $a2, 776($t0)
+	sw $a2, 904($t0)
+	sw $a2, 1032($t0)
+	sw $a2, 1036($t0)
+	sw $a2, 1040($t0)
+	sw $a2, 912($t0)
+	sw $a2, 784($t0)
+	sw $a2, 1044($t0)
+	sw $a2, 1048($t0)
+	sw $a2, 920($t0)
+	sw $a2, 792($t0)
+	sw $a2, 664($t0)
+	sw $a2, 928($t0)
+	sw $a2, 1060($t0)
+	sw $a2, 1064($t0)
+	sw $a2, 800($t0)
+	sw $a2, 676($t0)
+	sw $a2, 680($t0)
+	sw $a2, 812($t0)
+	sw $a2, 940($t0)
+	sw $a2, 1080($t0)
+	sw $a2, 948($t0)
+	sw $a2, 820($t0)
+	sw $a2, 692($t0)
+	sw $a2, 1084($t0)
+	sw $a2, 1088($t0)
+	sw $a2, 956($t0)
+	sw $a2, 828($t0)
+	sw $a2, 964($t0)
+	sw $a2, 836($t0)
+	sw $a2, 708($t0)
+	jr $ra
+	
+dumbNice:
+       li $a2,0xe7de0c
+	li $v0, 41       
+	li $a0, 0          
+	syscall 
+	
+	lw $t0, displayAddress
+	sw $a2, 1032($t0)
+	sw $a2, 904($t0)	
+	sw $a2, 776($t0)
+	sw $a2, 648($t0)
+	sw $a2, 780($t0)
+	sw $a2, 912($t0)
+	sw $a2, 1044($t0)
+	sw $a2, 916($t0)
+	sw $a2, 788($t0)
+	sw $a2, 660($t0)
+	
+	sw $a2, 1052($t0)
+	sw $a2, 924($t0)
+	sw $a2, 668($t0)
+	
+	sw $a2, 932($t0)
+	sw $a2, 804($t0)
+	sw $a2, 680($t0)
+	sw $a2, 684($t0)
+	sw $a2, 1064($t0)
+	sw $a2, 1068($t0)
+	
+	sw $a2, 948($t0)
+	sw $a2, 820($t0)
+	sw $a2, 696($t0)
+	sw $a2, 700($t0)
+	sw $a2, 824($t0)
+	sw $a2, 828($t0)
+	sw $a2, 1080($t0)
+	sw $a2, 1084($t0)
+	jr $ra
+	
+dumbCool:
+        li $a2,0xe7de0c
+	li $v0, 41       
+	li $a0, 0          
+	syscall 
+	
+	lw $t0, displayAddress
+	sw $a2, 904($t0)	
+	sw $a2, 776($t0)
+	sw $a2, 652($t0)
+	sw $a2, 656($t0)
+	sw $a2, 1036($t0)
+	sw $a2, 1040($t0)
+	sw $a2, 1052($t0)
+	sw $a2, 1056($t0)
+	sw $a2, 932($t0)
+	sw $a2, 804($t0)
+	sw $a2, 672($t0)
+	sw $a2, 668($t0)
+	sw $a2, 792($t0)
+	sw $a2, 920($t0)
+
+	sw $a2, 1072($t0)
+	sw $a2, 1076($t0)
+	sw $a2, 952($t0)
+	sw $a2, 824($t0)
+	sw $a2, 692($t0)
+	sw $a2, 688($t0)
+	sw $a2, 812($t0)
+	sw $a2, 940($t0)
+
+	sw $a2, 1088($t0)
+	sw $a2, 960($t0)
+	sw $a2, 832($t0)
+	sw $a2, 704($t0)
+	sw $a2, 1092($t0)
+	jr $ra
+###################################################################	
 exit:	
 	li $v0, 10 
 	syscall
