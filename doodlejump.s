@@ -1,4 +1,35 @@
-
+#####################################################################
+#
+# CSC258H5S Winter 2021 Assembly Programming Project
+# University of Toronto Mississauga
+#
+# Group members:
+# - Student 1: Roman Fanian, 1003587102
+# - Student 2 (if any): Hongyu Chen, 1005398197
+#
+# Bitmap Display Configuration:
+# - Unit width in pixels: 8					     
+# - Unit height in pixels: 8
+# - Display width in pixels: 256
+# - Display height in pixels: 256
+# - Base Address for Display: 0x10008000 ($gp)
+#
+# Which milestone is reached in this submission?
+# (See the assignment handout for descriptions of the milestones)
+# - Milestone 5
+#
+# Which approved additional features have been implemented?
+# (See the assignment handout for the list of additional features)
+# 1. Dynamic on-screen notification messages during the game such as "Nice!", "Wow!", "Cool!". The notification should change over time.
+# 2. Dynamic background: dynamically changing background during the game (e.g., clouds moving horizontally). The movement must be different from that of the platforms.
+# 3. Background music: add background music to the game.
+# 
+#
+# Any additional information that the TA needs to know:
+# Dynamic background includes the dynamic cloud and dynamic sun.
+# The on-screen notification messages is ramdonly choose from three words "wow","Nice","Cool", so it's possible to pop up the same word many times, but it will change over time.
+#
+#####################################################################
 .data
 	displayAddress:	.word	0x10008000
 	music: .byte 60,60,67,67,69,69,67,65,65,64,64,62,62,60,0
@@ -440,7 +471,7 @@ fall:
 
 sleep:
 	li $v0, 32
-	li $a0, 30		# sleep
+	li $a0, 15		# sleep
  	syscall
  	jr $ra
 
@@ -564,5 +595,85 @@ dumbCool:
 	jr $ra
 ###################################################################	
 exit:	
+	jal addBackground	
+	jal addDumbCloud
+	move $a0, $t3	
+	li $s6, 10 # the length of the platform
+	lw $t0, displayAddress
+	addi $k1, $t4, -1
+	jal addOnePlatform		
+	move $a0, $t5		
+	li $s6, 0
+	li $s6, 10 # the length of the platform
+	addi $k1, $t6, -1
+	lw $t0, displayAddress
+	jal addOnePlatform
+	move $a0, $t7		
+	li $s6, 10 # the length of the platform
+	lw $t0, displayAddress
+	addi $k1, $t8, -1
+	jal addOnePlatform	
+	lw $t0, displayAddress	
+	li $a2, 0xe7de0c	
+	
+
+	sw $a2, 1300($t0)
+	sw $a2, 1428($t0)
+	sw $a2, 1556($t0)
+	sw $a2, 1684($t0)
+	sw $a2, 1812($t0)
+	sw $a2, 1940($t0)
+	sw $a2, 2068($t0)
+	sw $a2, 2196($t0)
+	sw $a2, 2324($t0)
+	sw $a2, 2452($t0)
+	sw $a2, 2584($t0)
+	sw $a2, 2588($t0)
+	sw $a2, 2592($t0)
+	sw $a2, 2596($t0)
+	sw $a2, 2600($t0)
+	sw $a2, 2604($t0)
+	sw $a2, 2480($t0)
+	sw $a2, 2356($t0)
+	sw $a2, 2228($t0)
+	sw $a2, 2100($t0)
+	sw $a2, 1968($t0)
+	sw $a2, 1836($t0)
+	sw $a2, 1832($t0)
+	sw $a2, 1704($t0)
+	sw $a2, 1708($t0)
+	sw $a2, 1584($t0)
+	sw $a2, 1460($t0)
+	sw $a2, 1332($t0)
+	sw $a2, 1200($t0)
+	sw $a2, 1196($t0)
+	sw $a2, 1192($t0)
+	sw $a2, 1188($t0)
+	sw $a2, 1184($t0)
+	sw $a2, 1180($t0)
+	sw $a2, 1176($t0)
+	
+	sw $a2, 2628($t0)
+	sw $a2, 2496($t0)
+	sw $a2, 2364($t0)
+	sw $a2, 2384($t0)
+	sw $a2, 2508($t0)
+	sw $a2, 2632($t0)
+	sw $a2, 2760($t0)
+	sw $a2, 2888($t0)
+	sw $a2, 2884($t0)
+	sw $a2, 2880($t0)
+	
+	sw $a2, 2396($t0)
+	sw $a2, 2400($t0)
+	sw $a2, 2404($t0)
+	sw $a2, 2524($t0)
+	sw $a2, 2532($t0)
+	sw $a2, 2652($t0)
+	sw $a2, 2780($t0)
+	sw $a2, 2912($t0)
+	sw $a2, 2916($t0)
+	sw $a2, 2660($t0)
+	sw $a2, 2656($t0)
 	li $v0, 10 
 	syscall
