@@ -68,12 +68,27 @@ action:
 	
 goLeft:
 	addi $t1, $t1, -1
+	beqz $t1, goOpRight
+	lw $ra, 0($sp)
+	addi $sp,$sp,4
+	jr $ra
+
+goOpLeft:
+	li $t1,1
 	lw $ra, 0($sp)
 	addi $sp,$sp,4
 	jr $ra
 	
+goOpRight:
+	li $t1,32
+	lw $ra, 0($sp)
+	addi $sp,$sp,4
+	jr $ra
+		
 goRight:
 	addi $t1, $t1, 1
+	li $t9, 33
+	beq $t9,$t1,goOpLeft
 	lw $ra, 0($sp)
 	addi $sp,$sp,4
 	jr $ra
